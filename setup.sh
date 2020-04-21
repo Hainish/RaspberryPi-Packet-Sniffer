@@ -26,16 +26,6 @@ sudo systemctl enable hostapd
 sudo wget -O /etc/dnsmasq.conf https://raw.githubusercontent.com/Hainish/RaspberryPi-Packet-Sniffer/master/dnsmasq.conf
 sudo systemctl enable dnsmasq
 
-# Make sure packet forwarding is enabled on boot
-sudo sed -i 's/^#net.ipv4.ip_forward=1/net.ipv4.ip_forward=1/g' /etc/sysctl.conf
-
-# Set up routing iptables rules and ensure they are applied on boot
-sudo iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
-sudo iptables -A FORWARD -i eth0 -o wlan0 -m state --state RELATED,ESTABLISHED -j ACCEPT
-sudo iptables -A FORWARD -i wlan0 -o eth0 -j ACCEPT
-sudo sh -c 'iptables-save > /etc/iptables.ipv4.nat'
-sudo bash -c 'echo "iptables-restore < /etc/iptables.ipv4.nat" > /lib/dhcpcd/dhcpcd-hooks/70-ipv4-nat'
-
 # Install the latest mitmproxy and download a script which forwards http & https requests through it
 sudo pip3 install mitmproxy
 wget https://raw.githubusercontent.com/Hainish/RaspberryPi-Packet-Sniffer/master/mitm.sh
