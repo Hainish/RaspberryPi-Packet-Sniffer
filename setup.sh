@@ -7,7 +7,7 @@ set -e
 
 # Install dnsmasq, hostapd for IP assignment and an access point
 sudo apt-get update
-sudo apt-get install -y dnsmasq hostapd python3-pip
+sudo apt-get install -y dnsmasq hostapd iptables python3-pip
 
 # Remove wpasupplicant so it doesn't interfere with our hostapd
 sudo apt-get remove --purge -y wpasupplicant
@@ -27,7 +27,7 @@ sudo wget -O /etc/dnsmasq.conf https://raw.githubusercontent.com/Hainish/Raspber
 sudo systemctl enable dnsmasq
 
 # Install the latest mitmproxy and download a script which forwards http & https requests through it
-sudo pip3 install mitmproxy
+sudo pip3 install --break-system-packages mitmproxy
 wget https://raw.githubusercontent.com/Hainish/RaspberryPi-Packet-Sniffer/master/mitm.sh
 chmod +x mitm.sh
 
